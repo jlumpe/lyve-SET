@@ -261,9 +261,9 @@ check-CGP-assembly:
 check-Lyve-SET-PATH:
 	@echo Checking that your path includes Lyve-SET/scripts
 	@which launch_set.pl >/dev/null
-check-Lyve-SET:
-	@echo Checking that the SET executables are present
-	@export PATH=$$PATH:$(PREFIX)/scripts && which launch_set.pl >/dev/null
+# check-Lyve-SET:
+#	@echo Checking that the SET executables are present
+#	@export PATH=$$PATH:$(PREFIX)/scripts && which launch_set.pl >/dev/null
 check-PERL:
 	@echo Checking for perl multithreading
 	@perl -Mthreads -e 1
