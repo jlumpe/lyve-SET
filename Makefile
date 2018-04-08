@@ -7,6 +7,9 @@ PROJECT := "setTestProject"
 NUMCPUS := 1
 SHELL   := /bin/bash
 
+# Directory for additional source files - e.g. git repos cloned by CONDA
+SRCDIR := ..
+
 # Derived variables
 TMPDIR := $(PREFIX)/build
 TMPTARFILE=$(TMPDIR)/$(TARFILE)
@@ -46,18 +49,25 @@ clean-symlinks:
 	find $(PREFIX)/scripts -maxdepth 1 -type l -exec rm -vf {} \;
 
 install-SGELK:
-	git clone https://github.com/lskatz/Schedule--SGELK.git $(TMPDIR)/Schedule
+	# Skip the git-clone, we'll add this to the sources for the recipe and put it in SRCDIR
+	# git clone https://github.com/lskatz/Schedule--SGELK.git $(TMPDIR)/Schedule
 	-mkdir -p $(PREFIX)/lib/Schedule
-	mv -v $(TMPDIR)/Schedule/SGELK.pm $(PREFIX)/lib/Schedule/
-	mv -v $(TMPDIR)/Schedule/README.md $(PREFIX)/lib/Schedule/
-	mv -v $(TMPDIR)/Schedule/.git $(PREFIX)/lib/Schedule/
+	mv -v $(SRCDIR)/Schedule/SGELK.pm $(PREFIX)/lib/Schedule/
+	mv -v $(SRCDIR)/Schedule/README.md $(PREFIX)/lib/Schedule/
+	# mv -v $(SRCDIR)/Schedule/.git $(PREFIX)/lib/Schedule/
 
 clean-SGELK:
 	rm -rfv $(PREFIX)/lib/Schedule
 
 install-CGP:
 	# CGP scripts that are needed and that don't depend on CGP libraries
-	git clone https://github.com/lskatz/cg-pipeline $(PREFIX)/lib/cg-pipeline
+	#
+	# Skip the git-clone, we'll add this to the sources for the recipe
+	# git clone https://github.com/lskatz/cg-pipeline $(PREFIX)/lib/cg-pipeline
+	#
+	# Instead, let's move it from SRCDIR where we cloned it
+	mv -v $(SRCDIR)/cg-pipeline $(PREFIX)/lib/cg-pipeline
+	#
 	ln -s $(PREFIX)/lib/cg-pipeline/scripts/run_assembly_isFastqPE.pl $(PREFIX)/scripts/
 	ln -s $(PREFIX)/lib/cg-pipeline/scripts/run_assembly_trimClean.pl $(PREFIX)/scripts/
 	ln -s $(PREFIX)/lib/cg-pipeline/scripts/run_assembly_shuffleReads.pl $(PREFIX)/scripts/
